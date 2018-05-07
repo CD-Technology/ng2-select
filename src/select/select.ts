@@ -197,7 +197,6 @@ let styles = `
                    (keyup)="inputEvent($event, true)"
                    (click)="matchClick($event)"
                    (focus)="open()"
-                   (onModelChange)="onModelChange()"
                    [(ngModel)]="inputValue"
                    [disabled]="disabled"
                    autocomplete="false"
