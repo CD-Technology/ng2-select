@@ -680,12 +680,7 @@ export class GenericBehavior extends Behavior implements OptionsBehavior {
   }
 
   public filter(query: RegExp): void {
-    let options = this.actor.itemObjects
-      .filter((option: SelectItem) => {
-        return (stripTags(option.text).match(query) || stripTags(option.html).match(query)) &&
-          (this.actor.multiple === false ||
-            (this.actor.multiple === true && this.actor.active.map((item: SelectItem) => item.id).indexOf(option.id) < 0));
-      });
+    let options = this.actor.itemObjects;
     this.actor.options = options;
     if (this.actor.options.length > 0) {
       this.actor.activeOption = this.actor.options[0];
