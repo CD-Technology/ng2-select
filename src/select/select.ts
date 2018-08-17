@@ -4,7 +4,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SelectItem } from './select-item';
 import { stripTags } from './select-pipes';
 import { OptionsBehavior } from './select-interfaces';
-import { escapeRegexp } from './common';
+import { prepareRegexp } from './common';
 
 let styles = `
   .ui-select-toggle {
@@ -430,7 +430,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       this._active = [];
       this.data.next(this._active);
     }
-    this.behavior.filter(new RegExp(escapeRegexp(this.inputValue), 'ig'));
+    this.behavior.filter(new RegExp(prepareRegexp(this.inputValue), 'ig'));
     this.doEvent('typed', this.inputValue);
   }
 
@@ -680,7 +680,12 @@ export class GenericBehavior extends Behavior implements OptionsBehavior {
   }
 
   public filter(query: RegExp): void {
-    let options = this.actor.itemObjects;
+    let options = this.actor.itemObjects
+        .filter((option: SelectItem) => {
+            return (stripTags(option.text).match(query) || stripTags(option.html).match(query)) &&
+                (this.actor.multiple === false ||
+                    (this.actor.multiple === true && this.actor.active.map((item: SelectItem) => item.id).indexOf(option.id) < 0));
+        });
     this.actor.options = options;
     if (this.actor.options.length > 0) {
       this.actor.activeOption = this.actor.options[0];
