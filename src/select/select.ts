@@ -584,6 +584,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     this.hideOptions();
     if (this.multiple === false) {
       this.element.nativeElement.querySelector('.ui-select-container').focus();
+    } else {
+        this.open();
     }
   }
 }
