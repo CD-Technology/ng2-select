@@ -368,17 +368,6 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
 
       return;
     }
-    // backspace
-    if (!isUpMode && e.keyCode === 8) {
-      let el: any = this.element.nativeElement
-        .querySelector('div.ui-select-container > input');
-      if (!el.value || el.value.length <= 0) {
-        if (this.active.length > 0) {
-          this.remove(this.active[this.active.length - 1]);
-        }
-        e.preventDefault();
-      }
-    }
     // esc
     if (!isUpMode && e.keyCode === 27) {
       this.hideOptions();
@@ -454,6 +443,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       this.data.next(this.active);
       this.doEvent('removed', item);
     }
+      this.hideOptions();
+      this.open();
   }
 
   public doEvent(type: string, value: any): void {
