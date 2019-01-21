@@ -420,6 +420,14 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       this.data.next(this._active);
     }
     this.behavior.filter(new RegExp(prepareRegexp(this.inputValue), 'ig'));
+
+    this.options = this.itemObjects
+      .filter((option: SelectItem) => (this.multiple === false ||
+        this.multiple === true && !this.active.find((o: SelectItem) => option.text === o.text)));
+
+    if (this.options.length > 0) {
+      this.behavior.first();
+    }
     this.doEvent('typed', this.inputValue);
   }
 
